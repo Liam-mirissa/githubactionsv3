@@ -18,12 +18,12 @@ jobs:
 
     - name: Build and tag Docker image [incremental tag]
       run: |
-        docker build -t "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/myimage:${{ github.ref_name }}" .
+        docker build -t "${{ secrets.DOCKERHUB_USERNAME_LIAM}}/myimage:${{ github.ref_name }}" .
       working-directory: docker_liam
 
     - name: Build and tag Docker image [latest tag]
       run: |
-        docker build -t "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/myimage:latest" .
+        docker build -t "${{ secrets.DOCKERHUB_USERNAME_LIAM}}/myimage:latest" .
       working-directory: docker_liam    
   
     - name: Log in to Docker Hub
