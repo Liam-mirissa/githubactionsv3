@@ -1,39 +1,41 @@
-name: DockerBuild
-on:  
+name: Build and Push Docker Image
+
+on:
   push:
     tags:
       - '*'
-  workflow_dispatch: 
 
-jobs: 
-  build_and_push: 
-    runs-on: ubuntu-latest 
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
 
-    steps: 
-    - name: clone repo 
+    steps:
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Setup Docker build 
-      uses: docker/setup-buildx-action@v2 
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-    - name: Build Docker Image
-      run: docker build -t "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/mynginx:${{ github.ref_name }}" .
-      working-directory: docker_liam
+    - name: Build and tag Docker image [incremental tag]
+      run: |
+        docker build -t "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/myimage:${{ github.ref_name }}" .
+      working-directory: Docker
 
-    - name: Build Docker Image ( latest )
-      run: docker build -t "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/mynginx:latest" .
-      working-directory: docker_liam
+    - name: Build and tag Docker image [latest tag]
+      run: |
+        docker build -t "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/myimage:latest" .
+      working-directory: Docker      
+  
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKERHUB_TOKEN_LIAM }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME_LIAM }}" --password-stdin
 
-    - name: Log into Docker
-      run: echo "${{ secrets.DOCKERHUB_TOKEN_LIAM}}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME_LIAM }}" --password-stdin
+    - name: Push Docker image to Docker Hub
+      run: docker push "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/myimage:${{ github.ref_name }}"
+      working-directory: Docker
 
-    - name: Push Image ( incremental )
-      run: docker push "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/mynginx:${{ github.ref_name }}"
-      working-directory: docker_liam
+    - name: Push Docker image to Docker Hub
+      run: docker push "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/myimage:latest"
+      working-directory: Docker      
 
-    - name: Push Image ( latest )
-      run: docker push "${{ secrets.DOCKERHUB_USERNAME_LIAM }}/mynginx:latest"
-      working-directory: docker_liam
-
-    
-      
+    - name: Set output for next workflow
+      run: echo "::set-output name=image_tag::${{ github.ref_name }}"
