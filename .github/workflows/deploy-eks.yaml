@@ -21,7 +21,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESSKEY_LIAM }}
         aws-secret-access-key: ${{ secrets.AWS_SECRETKEY_LIAM }}
-        aws-region: us-east-1  # Replace with your EKS cluster region
+        aws-region: us-east-2
 
     - name: Update kubeconfig
       run: aws eks update-kubeconfig --name manualcluster1 --region us-east-2  # Replace with your EKS cluster name and region
