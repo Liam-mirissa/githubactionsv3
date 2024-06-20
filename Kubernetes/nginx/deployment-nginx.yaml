@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: 637423339404.dkr.ecr.us-east-2.amazonaws.com/nginx:latest
+        image: "${{ secrets.ECR_NGINX_REPO }}:latest"
         ports:
         - containerPort: 80
