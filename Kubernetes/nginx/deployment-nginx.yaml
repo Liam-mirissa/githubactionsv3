@@ -4,17 +4,17 @@ metadata:
   name: atlas-deployment 
   namespace: web
 spec:
-  replicas: 3 
+  replicas: 2 
   selector:
     matchLabels:
-      app: atlas-app 
+      app: nginx
   template:
     metadata: 
       labels:
-        app: atlas-app 
+        app: nginx
     spec:
       containers:
-      - name: atlas-app
-        image: liamdharmapriya/nginx:latest
+      - name: nginx
+        image: 637423339404.dkr.ecr.us-east-2.amazonaws.com/nginx:latest
         ports:
         - containerPort: 80
