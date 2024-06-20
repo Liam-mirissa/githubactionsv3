@@ -28,7 +28,7 @@ jobs:
     - name: Build and tag HTTP image [incremental tag]
       run: |
         docker build -f dockerfile.http -t "${{ secrets.DOCKERHUB_USERNAME }}/http:${{ github.ref_name }}" .
-        docker tag "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/nginx:${{ github.ref_name }}"
+        docker tag "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/http:${{ github.ref_name }}"
 
       working-directory: Docker 
       
@@ -36,7 +36,7 @@ jobs:
     - name: Build and tag HTTP image [latest tag]
       run: |
         docker build -f dockerfile.http -t "${{ secrets.DOCKERHUB_USERNAME }}/http:latest" .
-        docker tag "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/nginx:${{ github.ref_name }}"
+        docker tag "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/http:latest"
 
       working-directory: Docker 
 
@@ -52,7 +52,7 @@ jobs:
     - name: Build and tag Nginx image [latest tag]
       run: |
         docker build -f dockerfile.nginx -t "${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest" .
-        docker tag "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/nginx:${{ github.ref_name }}"
+        docker tag "${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/nginx:latest"
 
       working-directory: Docker 
 
