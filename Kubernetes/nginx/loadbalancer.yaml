@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: loadbalancer
+  name: loadbalancer-nginx
   namespace: web
 spec:
   selector:
-    app: webserver
+    app: nginx
   ports:
   - protocol: TCP
     port: 80
