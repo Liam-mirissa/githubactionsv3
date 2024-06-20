@@ -31,5 +31,6 @@ jobs:
         ECR_REPOSITORY: http
         IMAGE_TAG: ${{ github.ref_name }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -f dockerfile.http -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  
+      working-directory: Docker   
