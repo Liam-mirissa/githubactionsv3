@@ -1,0 +1,45 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Build, tag and Push HTTP image [incremental tag]
+      run: |
+        docker build -f dockerfile.http -t "${{ secrets.DOCKERHUB_USERNAME }}/http:${{ github.ref_name }}" .
+        docker push "${{ secrets.DOCKERHUB_USERNAME }}/http:${{ github.ref_name }}"
+      working-directory: Docker 
+      
+
+    - name: Build, tag and push HTTP image [latest tag]
+      run: |
+        docker build -f dockerfile.http -t "${{ secrets.DOCKERHUB_USERNAME }}/http:latest" .
+        docker push "${{ secrets.DOCKERHUB_USERNAME }}/http:latest"
+      working-directory: Docker 
+
+
+    - name: Build, tag and push Nginx image [incremental tag]
+      run: |
+        docker build -f dockerfile.nginx -t "${{ secrets.DOCKERHUB_USERNAME }}/nginx:${{ github.ref_name }}" .
+        docker push "${{ secrets.DOCKERHUB_USERNAME }}/nginx:${{ github.ref_name }}"
+      working-directory: Docker 
+
+
+    - name: Build, tag and push Nginx image [latest tag]
+      run: |
+        docker build -f dockerfile.nginx -t "${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest" .
+        docker push "${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest"
+      working-directory: Docker 
