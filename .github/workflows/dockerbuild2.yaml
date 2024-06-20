@@ -23,7 +23,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESSKEY_LIAM }}
         aws-secret-access-key: ${{ secrets.AWS_SECRETKEY_LIAM }}
-        aws-region: us-east-1  
+        aws-region: us-east-2  
 
     - name: Build and tag HTTP image [incremental tag]
       run: |
